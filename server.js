@@ -1,5 +1,6 @@
 import express from 'express';
 import connectDatabase from './config/db';
+import tasksRoute from './routes/tasks';
 
 // Initialize express
 const app = express();
@@ -7,8 +8,17 @@ const app = express();
 // Connect to database
 connectDatabase();
 
-// set up a static folder for front-end
+// Middlewares
+app.use(express.json({ extended: false })); //handles JSON files
+
+
+// Set up a static folder for front-end
 app.use(express.static('public'));
+
+
+// Routes
+app.use('/api/tasks', tasksRoute);
+
 
 // API endpoints
 app.get('/', (req, res) => 
