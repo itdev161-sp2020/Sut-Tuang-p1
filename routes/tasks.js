@@ -4,17 +4,17 @@ import Task from '../models/Task';
 
 const router = express.Router();
 
-// return tasks
+// Get task
 router.get('/', async (req, res) => {
     try {
         const tasks = await Task.find();
-        res.json(tasks);
+        return res.json(tasks);
     }catch(err) {
         res.json({ message: err });
     }
 });
 
-// add a task
+// Add task
 router.post(
     '/', 
     [
@@ -39,6 +39,31 @@ router.post(
         }
     }
 );
+
+// Delete task
+router.delete('/:taskId', async (req, res) => {
+    try {
+        const removedPost = await Task.remove({_id: req.params.taskId });
+        res.json(removedPost);
+    }catch(err){
+        res.json({ message: err}); 
+    }
+
+});
+
+// Update task status
+router.patch('/:taskId', async (req, res) => {
+    try {
+        const updatedTask = await Task.updateOne(
+            {_id: req.params.taskId },
+            { $set: { completed: req.body.completed }}
+        );
+        res.json(updatedTask);
+    }catch(err){
+        res.json({ message: err}); 
+    }
+
+});
 
 
 // module.exports = router;
