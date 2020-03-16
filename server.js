@@ -1,6 +1,7 @@
 import express from 'express';
 import connectDatabase from './config/db';
 //import { check, validationResult } from 'express-validator';
+import cors from 'cors';
 import tasksRoute from './routes/tasks';
 
 // Initialize express
@@ -11,6 +12,11 @@ connectDatabase();
 
 // Middlewares
 app.use(express.json({ extended: false })); //handles JSON files
+app.use(
+    cors({
+        origin: 'http://localhost:3000'
+    })
+);
 
 // Set up a static folder for front-end
 app.use(express.static('public'));
